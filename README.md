@@ -1,6 +1,6 @@
 # SurvivalExample
 
-- Гайд по передвижению персонажа: [ссылка](https://youtu.be/_QajrabyTJc)
+- [Гайд по передвижению персонажа] (https://youtu.be/_QajrabyTJc)
 
-- Англоязычный полезный канал по Unity: [ссылка](https://www.youtube.com/c/Brackeys/)
-- Англоязычный сайт с интересными системами на Unity: [ссылка](https://catlikecoding.com/unity/tutorials/)
+- [Англоязычный полезный канал по Unity] (https://www.youtube.com/c/Brackeys/)
+- [Англоязычный сайт с интересными системами на Unity] (https://catlikecoding.com/unity/tutorials/)
