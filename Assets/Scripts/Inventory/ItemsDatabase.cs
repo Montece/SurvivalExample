@@ -13,18 +13,42 @@ public class ItemsDatabase : MonoBehaviour
     ///<summary> Инициализация базы данных предметов </summary>
     public void Initializate()
     {
-        RegisterItem("Топор", "axe", 0, "Инструмент для добычи дерева или обороны от диких животных.");
+        RegisterItem("Палка", "stick", ItemType.Resource, "Обработанная ветка.");
+        RegisterItem("Топор", "axe", ItemType.Equipment, "Инструмент для добычи дерева или обороны от диких животных.");
     }
 
     ///<summary> Регистрация предмета в базе данных </summary>
-    private void RegisterItem(string title, string id, int type, string description)
+    private void RegisterItem(string title, string id, ItemType type, string description)
     {
         Item item = new Item();
         item.Title = title;
         item.ID = id;
         item.Description = description;
-        item.Icon = null; //Сделать!
+        item.Icon = Resources.Load<Sprite>("ItemIcons\\" + id);
         item.Type = type;
+
+        switch (type)
+        {
+            case ItemType.Resource:
+                item.IsStackable = true;
+                item.IsDurability = false;
+                break;
+            case ItemType.Consumable:
+                item.IsStackable = true;
+                item.IsDurability = false;
+                break;
+            case ItemType.Equipment:
+                item.IsStackable = false;
+                item.IsDurability = true;
+                break;
+            case ItemType.Buildings:
+                item.IsStackable = true;
+                item.IsDurability = false;
+                break;
+            default:
+                break;
+        }
+
         Items.Add(item);
     }
 
