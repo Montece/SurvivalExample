@@ -11,15 +11,15 @@ public class PlayerStats : MonoBehaviour
     private float MinFood = 0.0f;
     private float MaxFood = 100.0f;
     private float CurFood;
-    private float DecFood = 0.5f;
+    private float DecFood = 0.05f;
     //Вода
     private float MinWater = 0.0f;
     private float MaxWater = 100.0f;
     private float CurWater;
-    private float DecWater = 1.0f;
+    private float DecWater = 0.1f;
     //Выносливость
     private float MinStamina = 0.0f;
-    private float MaxStamina = 100.0f;
+    private float MaxStamina = 200.0f;
     private float CurStamina;
 
     private void Start()

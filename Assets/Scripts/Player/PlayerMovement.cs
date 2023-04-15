@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float StaminaPerRun = 10f;
     public float StaminaPerJump = 30f;
-    public float RegenStaminaPerSecond = 10f;
+    public float RegenStaminaPerSecond = 30f;
 
     public Transform GroundCheck;
     public float GroundDistance = 0.4f;
@@ -22,8 +23,10 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 Velocity;
     public bool IsGrounded;
 
+    public Animator animator;
     private CharacterController controller;
     private PlayerStats stats;
+    bool prevState;
 
     private void Start()
     {
@@ -41,6 +44,15 @@ public class PlayerMovement : MonoBehaviour
         float z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
+
+        bool state = move != Vector3.zero;
+
+        if (state != prevState)
+        {
+            animator.Play(state ? "BasicMotions@Walk01 - Forwards" : "BasicMotions@Idle01");
+            animator.SetBool("IsMove", state);
+        }
+        prevState = state;
 
         bool isRun = Input.GetKey(KeyCode.LeftShift) && move != Vector3.zero;
 
