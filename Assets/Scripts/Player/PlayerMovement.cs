@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -41,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 move = transform.right * x + transform.forward * z;
 
-        bool isRun = Input.GetKey(KeyCode.LeftShift);
+        bool isRun = Input.GetKey(KeyCode.LeftShift) && move != Vector3.zero;
 
         if (isRun && stats.GetCurStamina() >= StaminaPerRun * Time.deltaTime)
         {

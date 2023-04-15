@@ -8,6 +8,7 @@ public class PlayerInventory : MonoBehaviour
     public GameObject InventoryZone;
     public GameObject ArmZone;
     public GameObject SlotPrefab;
+    public GameObject BagPrefab;
 
     public Slot Arm = null;
     public Slot[] Slots = null;
@@ -267,5 +268,25 @@ public class PlayerInventory : MonoBehaviour
             RefreshInventory();
             RefreshArm();
         }
+    }
+
+    public void DropSlotFromBackpack(SlotUI slotUI)
+    {
+        Slot slot = slotUI.Slot_;
+
+        GameObject bag = Instantiate(BagPrefab);
+        bag.transform.position = transform.position + transform.forward * 2f;
+
+        Slot slot_ = new Slot();
+        slot_.Item = slot.Item;
+        slot_.Count = slot.Count;
+        slot_.Durability = slot.Durability;
+        bag.GetComponent<SlotInWorld>().SetSlot(slot_);
+
+        slot.Item = null;
+        slot.Count = 0;
+        slot.Durability = 0;
+
+        RefreshInventory();
     }
 }

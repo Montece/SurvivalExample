@@ -7,6 +7,13 @@ public class SlotUI : MonoBehaviour
 
     public void OnClick()
     {
-        FindObjectOfType<PlayerInventory>().MoveSlotFromBackpackToArm(this);
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            FindObjectOfType<PlayerInventory>().DropSlotFromBackpack(this);
+        }
+        else
+        {
+            FindObjectOfType<PlayerInventory>().MoveSlotFromBackpackToArm(this);
+        }
     }
 }
