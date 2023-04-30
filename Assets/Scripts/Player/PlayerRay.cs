@@ -6,11 +6,11 @@ public class PlayerRay : MonoBehaviour
     public TMP_Text Description;
     public PlayerInventory inventory;
     public PlayerStats stats;
-    public Camera camera;
+    public Camera PlayerCamera;
 
     private void Update()
     {
-        Ray ray = camera.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
+        Ray ray = PlayerCamera.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;
 
         bool isHit = Physics.Raycast(ray, out hit, 4);
@@ -19,6 +19,7 @@ public class PlayerRay : MonoBehaviour
         {
             SlotInWorld slotInWorld = hit.collider.gameObject.GetComponent<SlotInWorld>();
             WaterWorld waterWorld = hit.collider.gameObject.GetComponent<WaterWorld>();
+            Boat boat = hit.collider.gameObject.GetComponent<Boat>();
 
             if (slotInWorld != null)
             {
@@ -40,6 +41,28 @@ public class PlayerRay : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.F))
                 {
                     stats.AddCurWater(5f);
+                }
+            }
+            else if (boat != null)
+            {
+                if (!boat.IsWork)
+                {
+                    Description.text = $"Починить [F]";
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        boat.Repair();
+                        inventory.RefreshInventory();
+                    }
+                }
+                else
+                {
+                    Description.text = $"Спастись [F]";
+
+                    if (Input.GetKeyDown(KeyCode.F))
+                    {
+                        stats.transform.localPosition = new Vector3(1298.3f, 16.94f, 305.17f);
+                    }
                 }
             }
             else

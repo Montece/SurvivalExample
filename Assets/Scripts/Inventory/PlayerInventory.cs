@@ -13,6 +13,8 @@ public class PlayerInventory : MonoBehaviour
     public Slot Arm = null;
     public Slot[] Slots = null;
     public ItemsDatabase ItemsDatabase;
+    public PlayerStats PlayerStats;
+    public Transform CameraTransform;
 
     private void Start()
     {
@@ -24,6 +26,7 @@ public class PlayerInventory : MonoBehaviour
         for (int i = 0; i < Slots.Length; i++) Slots[i] = new Slot();
         Arm = new Slot();
         RefreshArm();
+        foreach (Transform child in CameraTransform) child.gameObject.SetActive(false);
 
         AddToInventory(new Slot()
         {
@@ -34,42 +37,15 @@ public class PlayerInventory : MonoBehaviour
 
         AddToInventory(new Slot()
         {
-            Item = ItemsDatabase.GetItemByID("axe"),
+            Item = ItemsDatabase.GetItemByID("pickaxe"),
             Count = 1,
             Durability = 100
-        });
-
-        AddToInventory(new Slot()
-        {
-            Item = ItemsDatabase.GetItemByID("axe"),
-            Count = 1,
-            Durability = 100
-        });
-
-        AddToInventory(new Slot()
-        {
-            Item = ItemsDatabase.GetItemByID("stick"),
-            Count = 5,
-            Durability = 0
-        });
-
-        AddToInventory(new Slot()
-        {
-            Item = ItemsDatabase.GetItemByID("axe"),
-            Count = 1,
-            Durability = 100
-        });
-
-        AddToInventory(new Slot()
-        {
-            Item = ItemsDatabase.GetItemByID("stick"),
-            Count = 5,
-            Durability = 0
         });
     }
 
     private void Update()
     {
+        //Открытие/закрытие инвентаря
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             InventoryZone.SetActive(!InventoryZone.activeSelf);
@@ -86,6 +62,57 @@ public class PlayerInventory : MonoBehaviour
                 //Инвентарь закрыт
                 Cursor.lockState = CursorLockMode.Locked;
                 MouseLook_.enabled = true;
+            }
+        }
+
+        //Использование предметов
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !InventoryZone.activeSelf)
+        {
+            if (Arm.Item != null)
+            {
+                switch (Arm.Item.Type)
+                {
+                    case ItemType.Resource:
+                        //Ничего не делаем
+                        break;
+                    case ItemType.Consumable:
+                        Consumable item = Arm.Item as Consumable;
+                        PlayerStats.AddCurFood(item.AddFood);
+                        PlayerStats.AddCurWater(item.AddWater);
+                        PlayerStats.AddCurHealth(item.AddHealth);
+                        Arm.Count -= 1;
+                        if (Arm.Count <= 0)
+                        {
+                            Arm.Item = null;
+                            Arm.Count = 0;
+                            Arm.Durability = 0;
+                        }
+                        RefreshArm();
+                        break;
+                    case ItemType.Equipment:
+                        foreach (Transform child in CameraTransform)
+                        {
+                            if (child.name == Arm.Item.ID)
+                            {
+                                child.GetComponent<IUsable>().Use();
+                                Arm.Durability -= 1;
+                                if (Arm.Durability <= 0)
+                                {
+                                    Arm.Item = null;
+                                    Arm.Count = 0;
+                                    Arm.Durability = 0;
+                                }
+                                RefreshArm();
+                                break;
+                            }
+                        }
+                        break;
+                    case ItemType.Buildings:
+                        //В разработке
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -167,7 +194,7 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    private void RefreshInventory()
+    public void RefreshInventory()
     {
         HideSlots();
         ShowSlots();
@@ -251,6 +278,16 @@ public class PlayerInventory : MonoBehaviour
                     slot.Count = 0;
                     slot.Durability = 0;
                 }
+
+                foreach (Transform child in CameraTransform) child.gameObject.SetActive(false);
+
+                if (Arm.Item.Type == ItemType.Equipment)
+                {
+                    foreach (Transform child in CameraTransform)
+                    {
+                        if (child.name == Arm.Item.ID) child.gameObject.SetActive(true);
+                    }
+                }
             }
 
             if (zone == "Arm")
@@ -262,6 +299,8 @@ public class PlayerInventory : MonoBehaviour
                     slot.Item = null;
                     slot.Count = 0;
                     slot.Durability = 0;
+
+                    foreach (Transform child in CameraTransform) child.gameObject.SetActive(false);
                 }
             }
 

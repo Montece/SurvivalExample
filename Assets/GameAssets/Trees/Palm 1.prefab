@@ -176,6 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8792992336403159406}
   - component: {fileID: 8792992336409669310}
+  - component: {fileID: -1147604053031190742}
   m_Layer: 6
   m_Name: Palm 1
   m_TagString: Untagged
@@ -214,3 +215,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: ef5cd9cdbb80e6849a5f7dd239d56605, type: 3}
+--- !u!114 &-1147604053031190742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8792992336403318094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d11578bc8c34f419e200ed2b8e904b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Durability: 10

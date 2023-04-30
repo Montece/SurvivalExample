@@ -12,6 +12,14 @@ public class Item
     public bool IsDurability; //Может ли иметь прочность?
 }
 
+[System.Serializable]
+public class Consumable : Item
+{
+    public int AddFood;
+    public int AddWater;
+    public int AddHealth;
+}
+
 //===== ТИПЫ ПРЕДМЕТОВ =====
 public enum ItemType
 {
